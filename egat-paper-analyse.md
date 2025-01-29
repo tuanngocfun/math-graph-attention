@@ -54,8 +54,8 @@ Lớp EGAT được thiết kế theo sơ đồ đối xứng, đảm bảo rằ
 
 **Đầu vào của lớp EGAT:**
 
-- **Tập hợp đặc trưng của nút**: $H = \{ \vec{h}_1, \vec{h}_2, \dots, \vec{h}_N \}$, với mỗi $\vec{h}_i \in \mathbb{R}^{F_H}$.
-- **Tập hợp đặc trưng của cạnh**: $E = \{ \vec{e}_1, \vec{e}_2, \dots, \vec{e}_M \}$, với mỗi $\vec{e}_p \in \mathbb{R}^{F_E}$.
+- **Tập hợp đặc trưng của nút**: $$H = \{ \vec{h}_1, \vec{h}_2, \dots, \vec{h}_N \}$$, với mỗi $\vec{h}_i \in \mathbb{R}^{F_H}$.
+- **Tập hợp đặc trưng của cạnh**: $$E = \{ \vec{e}_1, \vec{e}_2, \dots, \vec{e}_M \}$$, với mỗi $\vec{e}_p \in \mathbb{R}^{F_E}$.
 - $N$ và $M$ lần lượt là số lượng nút và cạnh trong đồ thị.
 - $F_H$ và $F_E$ là số lượng đặc trưng của nút và cạnh tương ứng.
 
@@ -63,8 +63,8 @@ Lớp EGAT được thiết kế theo sơ đồ đối xứng, đảm bảo rằ
 
 Sau khi xử lý, lớp EGAT tạo ra:
 
-- **Bộ đặc trưng mới của nút**: $H' = \{ \vec{h}_1', \vec{h}_2', \dots, \vec{h}_N' \}$, với $\vec{h}_i' \in \mathbb{R}^{F_H'}$.
-- **Bộ đặc trưng mới của cạnh**: $E' = \{ \vec{e}_1', \vec{e}_2', \dots, \vec{e}_M' \}$, với $\vec{e}_p' \in \mathbb{R}^{F_E'}$.
+- **Bộ đặc trưng mới của nút**: $$H' = \{ \vec{h}_1', \vec{h}_2', \dots, \vec{h}_N' \}$$, với $\vec{h}_i' \in \mathbb{R}^{F_H'}$.
+- **Bộ đặc trưng mới của cạnh**: $$E' = \{ \vec{e}_1', \vec{e}_2', \dots, \vec{e}_M' \}$$, với $\vec{e}_p' \in \mathbb{R}^{F_E'}$.
 
 Do các phép biến đổi tuyến tính khác nhau áp dụng lên đặc trưng của nút và cạnh, số chiều của đặc trưng sau khi biến đổi $(F_H', F_E')$ có thể khác với số chiều ban đầu $(F_H, F_E)$.
 
@@ -87,9 +87,7 @@ Sau khi ánh xạ, trọng số chú ý $\alpha_{ij}$ giữa nút $i$ và nút $
 - Tập $N_i$ gồm các nút lân cận cấp 1 của $i$, bao gồm cả chính $i$.
 - Các đặc trưng của nút $i$, nút $j$, và cạnh nối giữa chúng được nối (concatenate) và sử dụng để tính trọng số chú ý thông qua hàm kích hoạt LeakyReLU, sau đó chuẩn hóa bằng hàm softmax:
 
-$$
-\alpha_{ij} = \frac{\exp\left(\text{LeakyReLU}\left(\vec{a}^T [\vec{h}_i \| \vec{h}_j \| \vec{e}_{ij}]\right)\right)}{\sum_{k \in N_i} \exp\left(\text{LeakyReLU}\left(\vec{a}^T [\vec{h}_i \| \vec{h}_k \| \vec{e}_{ik}]\right)\right)}
-$$
+$$\alpha_{ij} = \frac{\exp\left(\text{LeakyReLU}\left(\vec{a}^T [\vec{h}_i \| \vec{h}_j \| \vec{e}_{ij}]\right)\right)}{\sum_{k \in N_i} \exp\left(\text{LeakyReLU}\left(\vec{a}^T [\vec{h}_i \| \vec{h}_k \| \vec{e}_{ik}]\right)\right)}$$
 
 trong đó:
 - $N_i$ là tập các nút lân cận cấp 1 của $i$ (bao gồm cả $i$).
@@ -101,9 +99,7 @@ Sau khi có trọng số chú ý $\alpha_{ij}$, đặc trưng nút mới đượ
 
 Đặc trưng nút mới $\vec{h}_i'$ được tính bằng tổng có trọng số:
 
-$$
-\vec{h}_i' = \sigma\left(\sum_{j \in N_i} \alpha_{ij} \vec{h}_j\right)
-$$
+$$\vec{h}_i' = \sigma\left(\sum_{j \in N_i} \alpha_{ij} \vec{h}_j\right)$$
 
 trong đó $\sigma$ là hàm phi tuyến (ví dụ: ReLU).
 
@@ -221,4 +217,3 @@ Những cải tiến này làm cho EGATs trở thành một mô hình mạnh m�
   - EGATs đạt độ chính xác vượt trội (~5-8%) so với mọi biến thể GAT
   - Khi đặc trưng cạnh quan trọng hơn nút, tỷ lệ $F'_H$ : $F'_E$ nhỏ (ví dụ $4:8$) cho kết quả tốt nhất
   - EGATs là phương pháp đầu tiên xử lý hiệu quả đồ thị có đặc trưng cạnh phức tạp
-
