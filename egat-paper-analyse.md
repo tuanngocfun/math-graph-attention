@@ -228,4 +228,3 @@ Những cải tiến này làm cho EGATs trở thành một mô hình mạnh m�
   - EGATs đạt độ chính xác vượt trội (~5-8%) so với mọi biến thể GAT
   - Khi đặc trưng cạnh quan trọng hơn nút, tỷ lệ $F'_H$ : $F'_E$ nhỏ (ví dụ $4:8$) cho kết quả tốt nhất
   - EGATs là phương pháp đầu tiên xử lý hiệu quả đồ thị có đặc trưng cạnh phức tạp
-
