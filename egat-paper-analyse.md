@@ -112,7 +112,9 @@ trong đó $\sigma$ là hàm phi tuyến (ví dụ: ReLU).
 Ngoài ra, khối chú ý nút còn tính toán một bộ đặc trưng nút tích hợp cạnh $H_m$, dùng trong lớp hợp nhất cuối cùng:
 
 
-$$\vec{m}_i = \sigma \left( \sum_{j \in N_i} \alpha_{ij} (\vec{h}_j || \vec{e}_{ij}) \right)$$
+```math
+\vec{m}_i = \sigma \left( \sum_{j \in N_i} \alpha_{ij} (\vec{h}_j || \vec{e}_{ij}) \right)
+```
 
 Tuy nhiên, $H_m$ chỉ được sử dụng ở tầng hợp nhất (merge layer) và không được truyền vào lớp EGAT tiếp theo.
 
