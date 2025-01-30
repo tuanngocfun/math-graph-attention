@@ -112,9 +112,7 @@ trong đó $\sigma$ là hàm phi tuyến (ví dụ: ReLU).
 Ngoài ra, khối chú ý nút còn tính toán một bộ đặc trưng nút tích hợp cạnh $H_m$, dùng trong lớp hợp nhất cuối cùng:
 
 
-```math
-\vec{m}_i = \sigma \left( \sum_{j \in N_i} \alpha_{ij} (\vec{h}_j || \vec{e}_{ij}) \right)
-```
+$$\vec{m}_i = \sigma \left( \sum_{j \in N_i} \alpha_{ij} (\vec{h}_j || \vec{e}_{ij}) \right)$$
 
 Tuy nhiên, $H_m$ chỉ được sử dụng ở tầng hợp nhất (merge layer) và không được truyền vào lớp EGAT tiếp theo.
 
@@ -143,7 +141,8 @@ Trọng số chú ý giữa cạnh $p$ và các cạnh lân cận $q$ được t
 
 Đặc trưng cạnh mới $\vec{e}_p'$ được tính thông qua tổng có trọng số của các đặc trưng cạnh lân cận:
 
-```math\vec{e}_p' = \sigma \left( \sum_{q \in N_p} \beta_{pq} \vec{e}_q \right)
+```math
+\vec{e}_p' = \sigma \left( \sum_{q \in N_p} \beta_{pq} \vec{e}_q \right)
 ```
 
 Như đặc trưng nút, đặc trưng cạnh mới sẽ phản ánh mối quan hệ giữa các cạnh, cũng như thông tin được tích hợp từ các nút liên quan.
