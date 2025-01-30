@@ -54,8 +54,8 @@ Lớp EGAT được thiết kế theo sơ đồ đối xứng, đảm bảo rằ
 
 **Đầu vào của lớp EGAT:**
 
-- **Tập hợp đặc trưng của nút**: $$H = \{ \vec{h}_1, \vec{h}_2, \dots, \vec{h}_N \}$$, với mỗi $\vec{h}_i \in \mathbb{R}^{F_H}$.
-- **Tập hợp đặc trưng của cạnh**: $$E = \{ \vec{e}_1, \vec{e}_2, \dots, \vec{e}_M \}$$, với mỗi $\vec{e}_p \in \mathbb{R}^{F_E}$.
+- **Tập hợp đặc trưng của nút**: $H = \{ \vec{h}_1, \vec{h}_2, \dots, \vec{h}_N \}$, với mỗi $\vec{h}_i \in \mathbb{R}^{F_H}$.
+- **Tập hợp đặc trưng của cạnh**: $E = \{ \vec{e}_1, \vec{e}_2, \dots, \vec{e}_M \}$, với mỗi $\vec{e}_p \in \mathbb{R}^{F_E}$.
 - $N$ và $M$ lần lượt là số lượng nút và cạnh trong đồ thị.
 - $F_H$ và $F_E$ là số lượng đặc trưng của nút và cạnh tương ứng.
 
@@ -63,8 +63,8 @@ Lớp EGAT được thiết kế theo sơ đồ đối xứng, đảm bảo rằ
 
 Sau khi xử lý, lớp EGAT tạo ra:
 
-- **Bộ đặc trưng mới của nút**: $$H' = \{ \vec{h}_1', \vec{h}_2', \dots, \vec{h}_N' \}$$, với $\vec{h}_i' \in \mathbb{R}^{F_H'}$.
-- **Bộ đặc trưng mới của cạnh**: $$E' = \{ \vec{e}_1', \vec{e}_2', \dots, \vec{e}_M' \}$$, với $\vec{e}_p' \in \mathbb{R}^{F_E'}$.
+- **Bộ đặc trưng mới của nút**: $H' = \{ \vec{h}_1', \vec{h}_2', \dots, \vec{h}_N' \}$, với $\vec{h}_i' \in \mathbb{R}^{F_H'}$.
+- **Bộ đặc trưng mới của cạnh**: $E' = \{ \vec{e}_1', \vec{e}_2', \dots, \vec{e}_M' \}$, với $\vec{e}_p' \in \mathbb{R}^{F_E'}$.
 
 Do các phép biến đổi tuyến tính khác nhau áp dụng lên đặc trưng của nút và cạnh, số chiều của đặc trưng sau khi biến đổi $(F_H', F_E')$ có thể khác với số chiều ban đầu $(F_H, F_E)$.
 
@@ -87,7 +87,9 @@ Sau khi ánh xạ, trọng số chú ý $\alpha_{ij}$ giữa nút $i$ và nút $
 - Tập $N_i$ gồm các nút lân cận cấp 1 của $i$, bao gồm cả chính $i$.
 - Các đặc trưng của nút $i$, nút $j$, và cạnh nối giữa chúng được nối (concatenate) và sử dụng để tính trọng số chú ý thông qua hàm kích hoạt LeakyReLU, sau đó chuẩn hóa bằng hàm softmax:
 
-$$\alpha_{ij} = \frac{\exp\left(\text{LeakyReLU}\left(\vec{a}^T [\vec{h}_i \| \vec{h}_j \| \vec{e}_{ij}]\right)\right)}{\sum_{k \in N_i} \exp\left(\text{LeakyReLU}\left(\vec{a}^T [\vec{h}_i \| \vec{h}_k \| \vec{e}_{ik}]\right)\right)}$$
+```math 
+\alpha_{ij} = \frac{\exp\left(\text{LeakyReLU}\left(\vec{a}^T [\vec{h}_i \| \vec{h}_j \| \vec{e}_{ij}]\right)\right)}{\sum_{k \in N_i} \exp\left(\text{LeakyReLU}\left(\vec{a}^T [\vec{h}_i \| \vec{h}_k \| \vec{e}_{ik}]\right)\right)}
+```
 
 trong đó:
 - $N_i$ là tập các nút lân cận cấp 1 của $i$ (bao gồm cả $i$).
@@ -99,7 +101,9 @@ Sau khi có trọng số chú ý $\alpha_{ij}$, đặc trưng nút mới đượ
 
 Đặc trưng nút mới $\vec{h}_i'$ được tính bằng tổng có trọng số:
 
-$$\vec{h}_i' = \sigma\left(\sum_{j \in N_i} \alpha_{ij} \vec{h}_j\right)$$
+```math
+\vec{h}_i' = \sigma\left(\sum_{j \in N_i} \alpha_{ij} \vec{h}_j\right)
+```
 
 trong đó $\sigma$ là hàm phi tuyến (ví dụ: ReLU).
 
@@ -108,7 +112,9 @@ trong đó $\sigma$ là hàm phi tuyến (ví dụ: ReLU).
 Ngoài ra, khối chú ý nút còn tính toán một bộ đặc trưng nút tích hợp cạnh $H_m$, dùng trong lớp hợp nhất cuối cùng:
 
 
-$$\vec{m}_i = \sigma \left( \sum_{j \in N_i} \alpha_{ij} (\vec{h}_j || \vec{e}_{ij}) \right)$$
+```math
+\vec{m}_i = \sigma \left( \sum_{j \in N_i} \alpha_{ij} (\vec{h}_j || \vec{e}_{ij}) \right)
+```
 
 Tuy nhiên, $H_m$ chỉ được sử dụng ở tầng hợp nhất (merge layer) và không được truyền vào lớp EGAT tiếp theo.
 
@@ -126,7 +132,9 @@ Khối chú ý cạnh được thiết kế để cập nhật đặc trưng c�
 
 Trọng số chú ý giữa cạnh $p$ và các cạnh lân cận $q$ được tính toán như sau:
 
-$$\beta_{pq} = \frac{\exp(\text{LeakyReLU}(\vec{b}^T [\vec{e}_p || \vec{e}_q || \vec{h}_{pq}]))}{\sum_{k \in N_p} \exp(\text{LeakyReLU}(\vec{b}^T [\vec{e}_p || \vec{e}_k || \vec{h}_{pk}]))}$$
+```math
+\beta_{pq} = \frac{\exp(\text{LeakyReLU}(\vec{b}^T [\vec{e}_p || \vec{e}_q || \vec{h}_{pq}]))}{\sum_{k \in N_p} \exp(\text{LeakyReLU}(\vec{b}^T [\vec{e}_p || \vec{e}_k || \vec{h}_{pk}]))}
+```
 
 - $N_p$: Tập các cạnh lân cận cấp 1 của cạnh $p$ (bao gồm chính $p$).
 - $\vec{b}$: Vector trọng số có kích thước $\mathbb{R}^{2F_E' + F_H'}$.
@@ -135,7 +143,8 @@ $$\beta_{pq} = \frac{\exp(\text{LeakyReLU}(\vec{b}^T [\vec{e}_p || \vec{e}_q || 
 
 Đặc trưng cạnh mới $\vec{e}_p'$ được tính thông qua tổng có trọng số của các đặc trưng cạnh lân cận:
 
-$$\vec{e}_p' = \sigma \left( \sum_{q \in N_p} \beta_{pq} \vec{e}_q \right)$$
+```math\vec{e}_p' = \sigma \left( \sum_{q \in N_p} \beta_{pq} \vec{e}_q \right)
+```
 
 Như đặc trưng nút, đặc trưng cạnh mới sẽ phản ánh mối quan hệ giữa các cạnh, cũng như thông tin được tích hợp từ các nút liên quan.
 
@@ -158,7 +167,9 @@ Mô hình EGATs được xây dựng bằng cách xếp chồng nhiều lớp EG
 - Khác với GATs, cơ chế chú ý đa đầu trong EGATs được thực hiện trên toàn bộ các lớp EGAT thay vì chỉ một lớp duy nhất.
 - $K$ bộ đặc trưng tích hợp cạnh độc lập sẽ được tính toán và hợp nhất, tạo thành biểu diễn đặc trưng tổng thể:
 
-$$\vec{h}_i^* = \bigg\|_{k=1}^{K} \bigg\|_{l=1}^{L} m_{il,k}$$
+```math
+\vec{h}_i^* = \bigg\|_{k=1}^{K} \bigg\|_{l=1}^{L} m_{il,k}
+```
 
 trong đó:
 
