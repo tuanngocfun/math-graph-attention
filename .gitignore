@@ -1,0 +1,6 @@
+*.json
+*.inkml
+*.lg
+*.dot
+*.pyc
+checkpoint/*
